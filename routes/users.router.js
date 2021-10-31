@@ -1,60 +1,56 @@
 const express = require('express');
-const faker = require('faker');
+
+const UsersService = require('./../services/user.service');
 
 const router = express.Router();
+const service = new UsersService();
 
-// READ users
-router.get('/', (req, res) => {
-  const users = [];
-  const {size} = req.query;
-  const limit = size || 10;
-  for (let i = 0; i < limit; i++) {
-    users.push({
-      name: faker.name.firstName(),
-      lastName: faker.name.lastName(),
-      image: faker.image.imageUrl(),
-    });
-  }
+// FIND
+router.get('/', async(req, res) => {
+  const users = await service.find();
   res.json(users)
 });
 
-router.get('/:id', (req,res) => {
+// FIND ONE
+router.get('/:id', async(req,res) => {
   const {id} = req.params;
-  res.json({
-    id,
-    name: faker.name.firstName(),
-    lastName: faker.name.lastName(),
-    image: faker.image.imageUrl(),
-  });
+  const user = await service.findOne(id);
+  res.json(user);
 });
 
 // CREATE
-router.post('/', (req, res) => {
+router.post('/', async(req, res) => {
   const body = req.body;
-  res.json({
-    message: 'Created',
-    data: body
-  });
+  const newUser = await service.create(body)
+  res.status(201).json(newUser);
 });
 
 // UPDATE
-router.patch('/:id', (req, res) => {
-  const {id} = req.params;
-  const body = req.body;
-  res.json({
-    message: 'Update',
-    data: body,
-    id,
-  });
+router.patch('/:id', async(req, res) => {
+  try {
+    const {id} = req.params;
+    const body = req.body;
+    const user = await service.update(id, body);
+    res.status(201).json(user);
+  } catch (error) {
+    res.status(404).json({
+      message: error.message
+    })
+  }
 });
 
 // DELETE
-router.delete('/:id', (req, res) => {
-  const {id} = req.params;
-  res.json({
-    message: 'Deleted',
-    id,
-  });
+router.delete('/:id', async(req, res) => {
+  try {
+    const {id} = req.params;
+    const rta = await service.delete(id);
+    res.json(rta);
+  } catch (error) {
+    res.status(404).json({
+      message: error.message
+    })
+  }
+
 });
 
 module.exports = router;
