@@ -12,10 +12,14 @@ router.get('/', async(req, res) => {
 });
 
 // FIND ONE
-router.get('/:id', async(req,res) => {
-  const {id} = req.params;
-  const user = await service.findOne(id);
-  res.json(user);
+router.get('/:id', async(req, res, next) => {
+  try {
+    const {id} = req.params;
+    const user = await service.findOne(id);
+    res.json(user);
+  } catch (error) {
+    next(error);
+  }
 });
 
 // CREATE
