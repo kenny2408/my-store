@@ -18,7 +18,12 @@ router.get('/:id', async(req, res, next) => {
     const user = await service.findOne(id);
     res.json(user);
   } catch (error) {
+    const {output} = error;
+    res.status(output.statusCode).json(output.payload);
     next(error);
+    /* res.status(404).json({
+      message: error.message
+    }); */
   }
 });
 
@@ -37,9 +42,12 @@ router.patch('/:id', async(req, res) => {
     const user = await service.update(id, body);
     res.status(201).json(user);
   } catch (error) {
-    res.status(404).json({
+    const {output} = error;
+    res.status(output.statusCode).json(output.payload);
+    next(error);
+    /* res.status(404).json({
       message: error.message
-    })
+    }); */
   }
 });
 
@@ -50,9 +58,12 @@ router.delete('/:id', async(req, res) => {
     const rta = await service.delete(id);
     res.json(rta);
   } catch (error) {
-    res.status(404).json({
+    const {output} = error;
+    res.status(output.statusCode).json(output.payload);
+    next(error);
+    /* res.status(404).json({
       message: error.message
-    })
+    }); */
   }
 
 });

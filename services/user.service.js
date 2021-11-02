@@ -16,6 +16,7 @@ class UsersService {
         name: faker.name.firstName(),
         lastName: faker.name.lastName(),
         image: faker.image.imageUrl(),
+        isBlock: faker.datatype.boolean(),
       });
     }
   }
@@ -40,7 +41,10 @@ class UsersService {
   async findOne(id) {
     const user = this.users.find(item => item.id === id);
     if (!user) {
-      throw boom.notFound('user not found')
+      throw boom.notFound('user not found');
+    }
+    if (user.isBlock) {
+      throw boom.conflict('user is block');
     }
     return user;
   }

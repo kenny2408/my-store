@@ -1,6 +1,8 @@
 const express = require('express');
 
 const ProductsService = require('./../services/product.service');
+const validatorHadler = require('./../middlewares/validator.handler');
+const {createProductSchema, updateProductSchema, getProductSchema} = require('./../schemas/product.schema');
 
 const router = express.Router();
 const service = new ProductsService();
@@ -18,10 +20,12 @@ router.get('/:id', async(req, res, next) => {
     const product = await service.findOne(id);
     res.json(product);
   } catch (error) {
-    //next(error);
-    res.status(404).json({
+    const {output} = error;
+    res.status(output.statusCode).json(output.payload);
+    next(error);
+    /* res.status(404).json({
       message: error.message
-    });
+    }); */
   }
 });
 
@@ -40,10 +44,12 @@ router.patch('/:id', async(req, res, next) => {
     const product = await service.update(id, body);
     res.json(product);
   } catch (error) {
-    //next(error);
-    res.status(404).json({
+    const {output} = error;
+    res.status(output.statusCode).json(output.payload);
+    next(error);
+    /* res.status(404).json({
       message: error.message
-    });
+    }); */
   };
 });
 
@@ -54,9 +60,12 @@ router.delete('/:id', async(req, res) => {
     const rta = await service.delete(id);
     res.json(rta);
   } catch (error) {
-    res.status(404).json({
+    const {output} = error;
+    res.status(output.statusCode).json(output.payload);
+    next(error);
+    /* res.status(404).json({
       message: error.message
-    })
+    }); */
   }
 
 });
