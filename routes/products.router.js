@@ -18,7 +18,10 @@ router.get('/:id', async(req, res, next) => {
     const product = await service.findOne(id);
     res.json(product);
   } catch (error) {
-    next(error);
+    //next(error);
+    res.status(404).json({
+      message: error.message
+    });
   }
 });
 
@@ -37,7 +40,10 @@ router.patch('/:id', async(req, res, next) => {
     const product = await service.update(id, body);
     res.json(product);
   } catch (error) {
-    next(error);
+    //next(error);
+    res.status(404).json({
+      message: error.message
+    });
   };
 });
 
