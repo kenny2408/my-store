@@ -20,7 +20,10 @@
   },
   "dependencies": {
     "@hapi/boom": "^9.1.4",
+    "compose": "^0.1.2",
     "cors": "^2.8.5",
+    "docker": "^1.0.0",
+    "docker-compose": "^0.23.13",
     "express": "^4.17.1",
     "faker": "^5.5.3",
     "joi": "^17.4.2"
