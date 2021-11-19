@@ -1,5 +1,6 @@
 const faker = require('faker');
 const boom = require('@hapi/boom');
+const { models } = require('../libs/sequelize');
 
 class UsersService {
 
@@ -30,12 +31,9 @@ class UsersService {
     return newUser
   }
 
-  find() {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve(this.users)
-      }, 3000);
-    });
+  async find() {
+    const rta = await models.User.findAll();
+    return rta;
   }
 
   async findOne(id) {
