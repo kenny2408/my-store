@@ -1,10 +1,11 @@
 const faker = require('faker');
 const boom = require('@hapi/boom');
+
 const sequelize = require('../libs/sequelize');
 
 class ProductsService {
 
-  constructor() {
+  constructor(){
     this.products = [];
     this.generate();
   }
@@ -67,8 +68,9 @@ class ProductsService {
       throw boom.notFound('product not found');
     }
     this.products.splice(index, 1);
-    return {id};
+    return { id };
   }
+
 }
 
 module.exports = ProductsService;
