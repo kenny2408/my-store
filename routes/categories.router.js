@@ -7,7 +7,6 @@ const { createCategorySchema, updateCategorySchema, getCategorySchema } = requir
 const router = express.Router();
 const service = new CategoryService();
 
-// FIND
 router.get('/', async (req, res, next) => {
   try {
     const categories = await service.find();
@@ -17,7 +16,6 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-// FIND ONE
 router.get('/:id',
   validatorHandler(getCategorySchema, 'params'),
   async (req, res, next) => {
@@ -31,7 +29,6 @@ router.get('/:id',
   }
 );
 
-// CREATE
 router.post('/',
   validatorHandler(createCategorySchema, 'body'),
   async (req, res, next) => {
@@ -45,7 +42,6 @@ router.post('/',
   }
 );
 
-// UPDATE
 router.patch('/:id',
   validatorHandler(getCategorySchema, 'params'),
   validatorHandler(updateCategorySchema, 'body'),
@@ -61,7 +57,6 @@ router.patch('/:id',
   }
 );
 
-// DELETE
 router.delete('/:id',
   validatorHandler(getCategorySchema, 'params'),
   async (req, res, next) => {
