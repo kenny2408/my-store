@@ -13,7 +13,15 @@ class OrderService {
   }
 
   async find() {
-    return [];
+    const orders = await models.Order.findAll({
+      include: [
+        {
+          association: 'customer',
+          include: ['user']
+        }
+      ]
+    })
+    return orders;
   }
 
   async findOne(id) {
@@ -25,17 +33,21 @@ class OrderService {
         }
       ]
     });
+    if (!order) {
+      throw boom.notFound('order not found');
+    }
     return order;
   }
 
   async update(id, changes) {
-    return {
-      id,
-      changes,
-    };
+    const order = await this.findOne(id);
+    const rta = await order.update(changes);
+    return rta;
   }
 
   async delete(id) {
+    const order = await this.findOne(id);
+    await order.destroy();
     return { id };
   }
 
