@@ -6,7 +6,6 @@ const {
   getOrderSchema,
   createOrderSchema,
   addItemSchema,
-  //updateOrderSchema,
 } = require('../schemas/order.schema');
 
 const router = express.Router();
