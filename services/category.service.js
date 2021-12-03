@@ -12,8 +12,16 @@ class CategoryService {
     return newCategory;
   }
 
-  async find() {
-    const categories = await models.Category.findAll();
+  async find(query) {
+    const options = {
+      include: [],
+    }
+    const { limit, offset } = query;
+    if (limit && offset) {
+      options.limit = limit;
+      options.offset = offset;
+    }
+    const categories = await models.Category.findAll(options);
     return categories;
   }
 

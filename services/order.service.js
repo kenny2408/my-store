@@ -17,17 +17,17 @@ class OrderService {
     return newItem;
   }
 
-  async find() {
-    const orders = await models.Order.findAll({
-      include: [
-        {
-          association: 'customer',
-          include: ['user']
-        },
-        'items'
-      ]
-    })
-    return orders;
+  async find(query) {
+    const options = {
+      include: []
+    }
+    const { limit, offset } = query;
+    if (limit && offset) {
+      options.limit = limit;
+      options.offset = offset;
+    }
+    const orders = await models.Order.findAll(options)
+    return orders
   }
 
   async findOne(id) {
@@ -47,14 +47,13 @@ class OrderService {
   }
 
   async update(id, changes) {
-    const order = await this.findOne(id);
-    const rta = await order.update(changes);
-    return rta;
+    return {
+      id,
+      changes,
+    };
   }
 
   async delete(id) {
-    const order = await this.findOne(id);
-    await order.destroy();
     return { id };
   }
 

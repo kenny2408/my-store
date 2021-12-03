@@ -5,10 +5,16 @@ class CustomerService {
 
   constructor() {}
 
-  async find() {
-    const rta = await models.Customer.findAll({
+  async find(query) {
+    const options = {
       include: ['user']
-    });
+    }
+    const { limit, offset } = query;
+    if (limit && offset) {
+      options.limit = limit;
+      options.offset = offset;
+    }
+    const rta = await models.Customer.findAll(options);
     return rta;
   }
 

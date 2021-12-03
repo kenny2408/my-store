@@ -10,10 +10,16 @@ class UserService {
     return newUser;
   }
 
-  async find() {
-    const rta = await models.User.findAll({
+  async find(query) {
+    const options = {
       include: ['customer']
-    });
+    }
+    const { limit, offset } = query;
+    if (limit && offset) {
+      options.limit = limit;
+      options.offset = offset;
+    }
+    const rta = await models.User.findAll(options);
     return rta;
   }
 
