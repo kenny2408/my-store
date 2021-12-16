@@ -1,4 +1,5 @@
 const boom = require('@hapi/boom');
+const bcrypt = require('bcrypt');
 
 const { models } = require('./../libs/sequelize');
 
@@ -6,7 +7,10 @@ class UserService {
   constructor() {}
 
   async create(data) {
-    const newUser = await models.User.create(data);
+    const newUser = await models.User.create({
+      ...data,
+    });
+    delete newUser.dataValues.password;
     return newUser;
   }
 
@@ -20,6 +24,13 @@ class UserService {
       options.offset = offset;
     }
     const rta = await models.User.findAll(options);
+    return rta;
+  }
+
+  async findByEmail(email) {
+    const rta = await models.User.findOne({
+      where: { email }
+    });
     return rta;
   }
 
