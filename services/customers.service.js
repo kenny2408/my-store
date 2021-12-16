@@ -28,12 +28,10 @@ class CustomerService {
   }
 
   async create(data) {
-    const hash = await bcrypt.hash(data.user.password, 10);
     const newData = {
       ...data,
       user: {
-        ...data.user,
-        password: hash
+        ...data.user
       }
     }
     const newCustomer = await models.Customer.create(newData, {
