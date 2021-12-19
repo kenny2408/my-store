@@ -19,11 +19,11 @@ async function sendMail() {
 
   // send mail with defined transport object
   let info = await transporter.sendMail({
-    from: 'kenny.nodemailer@gmail.com', // sender address
-    to: "escalantemaricela248@gmail.com", // list of receivers
+    from: config.userNodemailer, // sender address
+    to: `${user.email}`, // list of receivers
     subject: "Nuevo correo ✔", // Subject line
-    text: "Hola Maricela Escalante", // plain text body
-    html: "<b>Hola Maricela Escalante</b>", // html body
+    text: `Hola ${user.email}`, // plain text body
+    html: `Hola ${user.email}, este es un correo de prueba`, // html body
   });
 
   console.log("Message sent: %s", info.messageId);
